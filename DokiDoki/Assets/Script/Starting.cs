@@ -23,8 +23,8 @@ public class Starting : MonoBehaviour
     private float Totalnum;
     private int num;
     private float ave;
-    [SerializeField] private float Limiter = 3;//最初計測しない時間時間
-    [SerializeField] private float LImit = 5;//平均心拍計算までの時間
+    [SerializeField] private float Limiter = 20;//最初計測しない時間時間
+    [SerializeField] private float LImit = 10;//平均心拍計算までの時間
 
     // Start is called before the first frame update
     void Start()
@@ -50,7 +50,7 @@ public class Starting : MonoBehaviour
             if (on == false) {
                 if (H != 0) {
                     on = true;
-                    HandText.text = "♡そのまま維持してね♡";
+                    HandText.text = "♡そのまま維持♡";
                     Debug.Log("計測開始");
                 }
             }//一度値を取ったらスイッチをtrueに
@@ -70,7 +70,7 @@ public class Starting : MonoBehaviour
                     ave = Totalnum / num;
                     Debug.Log("AVE : " + ave);
                     stand_by = true;
-                    HandText.text = "♡OKそのまま維持して♡";
+                    HandText.text = "♡OKそのまま維持♡";
                     TotalTimer = 0;
                 }
             }
@@ -98,7 +98,7 @@ public class Starting : MonoBehaviour
     {
         return ave;
     }
-    private bool GetST()
+    public bool GetST()
     {
         return Allstand_by;
     }

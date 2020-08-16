@@ -14,7 +14,7 @@ public class OnHeart : MonoBehaviour
 
     ///hertanim
     [SerializeField] private Sprite[] Hearts;
-    [SerializeField] private float time = 5;//1周にかかる秒数
+    [SerializeField] private float time = 2;//1周にかかる秒数
     private float timer;
     private float Atimer;
     private int num;
@@ -63,6 +63,11 @@ public class OnHeart : MonoBehaviour
         Htext.text = "Heart:" + Heart.ToString();
         Otext.text = "  O_2:" + O_2.ToString();
         //Debug.Log(Heart + " , " + O_2);
+    }
+
+    public void SetH(float f)
+    {
+        time = f;
     }
 
 }
