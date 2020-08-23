@@ -10,7 +10,7 @@ public class Question : MonoBehaviour
     [SerializeField] private GameObject QS;
     private string[] Q =
     {
-        "では始めます。すべていいえで答えてください",
+        "では始めます。いいえで答えてください",
         "問題①:あなたは今日朝ごはんを食べましたか？",
         "問題②:あなたは今日よく眠れましたか？",
         "問題③:あなたは昨日ゲームをしましたか？",
@@ -31,6 +31,14 @@ public class Question : MonoBehaviour
     OnHeart OH;
     SerialLight SL;
     private int HI,LOW;
+
+
+    private KeywordController keyCon;
+    private string[][] keywords;
+
+    AudioSource audioSource;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +51,16 @@ public class Question : MonoBehaviour
         Ave = S.GetAve();
         HI = 0;LOW = 0;//心拍数の高低記録
         num = 0;
+
+        keywords = new string[2][];
+        keywords[0] = new string[] { "いいえ", "イイエ" };//ひらがなでもカタカナでもいい
+        keywords[1] = new string[] { "いい", "イイ" };//ひらがなでもカタカナでもいい
+        keyCon = new KeywordController(keywords, true);//keywordControllerのインスタンスを作成
+        keyCon.SetKeywords();//KeywordRecognizerにkeywordsを設定する
+        keyCon.StartRecognizing(0);//シーン中で音声認識を始めたいときに呼び出す
+        keyCon.StartRecognizing(1);
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -55,6 +73,7 @@ public class Question : MonoBehaviour
                 stsw = true;
                 QS.SetActive(true);//表示を行う
                 QuestionText.text = Q[num];
+                //audioSource.Play();
             }//初期の準備が終わったら 
         }
 
@@ -62,7 +81,9 @@ public class Question : MonoBehaviour
         {
             Timer += Time.deltaTime;
 
-            if(Timer > TimeToCalculate)
+            /*if (keyCon.hasRecognized[0])*/ Debug.Log(keyCon.hasRecognized[0]);
+
+            if(Timer > TimeToCalculate && keyCon.hasRecognized[0] == true)
             {
                 Debug.Log("計測終わり");
                 if (HI < LOW)
@@ -85,7 +106,8 @@ public class Question : MonoBehaviour
                     Debug.Log("次へ");
                     Timer = 0;
                     num++;
-                    if(num == Q.Length)
+                    keyCon.hasRecognized[0] = false;
+                    if (num == Q.Length)
                     {
                         QuestionText.text = "終わりです。あってましたか？";
                         RiStart();

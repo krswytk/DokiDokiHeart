@@ -65,7 +65,7 @@ public class Starting : MonoBehaviour
                     num++;
                 }
 
-                if (TotalTimer > LImit + Limiter)
+                if (TotalTimer > LImit + Limiter && O != 0)
                 { 
                     ave = Totalnum / num;
                     Debug.Log("AVE : " + ave);
